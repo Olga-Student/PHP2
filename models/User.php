@@ -6,12 +6,12 @@ namespace app\models;
 
 class User extends Model
 {
-  public $name;
+  public $full_name;
   public $email;
 
-    public function getByLogin(string $login)
+    public function getByLogin($login)
   {
-      $sql = "SELECT * FROM {$this->tableName} WHERE login = {$login}";
+      $sql = "SELECT * FROM {$this->tablename} WHERE login = {$login}";
       return $this->db->queryOne($sql);
   }
   public function getTableName()

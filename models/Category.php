@@ -1,7 +1,9 @@
 <?php
+
 namespace app\models;
 
-class Category extends Model {
+class Category extends Model
+{
     public $id;
     public $name;
 
