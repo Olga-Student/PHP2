@@ -80,7 +80,7 @@ class Db
         $pdoStatement = $this->query($sql, $params);
         if (isset($className)){
             $pdoStatement->setFetchMode(\PDO::FETCH_CLASS, $className);
-        };
+        }
            return $pdoStatement->fetchAll();
     }
 
