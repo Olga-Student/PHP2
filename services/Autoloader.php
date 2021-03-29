@@ -5,20 +5,19 @@ namespace app\services;
 class Autoloader
 {
     private $fileExtension = ".php";
-    public function autoload($className)
+
+
+    //app\models\Product
+    public function loadClass($className)
     {
-        //echo $className."<br>";
         $className = str_replace(ROOT_NAMESPACE, ROOT_DIR, $className);
-        //var_dump($className);exit();
-        $fileName = realpath($className . $this->fileExtension);
-        //var_dump($fileName);exit();
-        //далее проверяем наличие файла
-        if (file_exists($fileName)) {
-            include $fileName;
+        $filename = realpath($className . $this->fileExtension);
+        if (file_exists($filename)) {
+            include $filename;
             return true;
         }
+
         return false;
     }
 }
-
 
