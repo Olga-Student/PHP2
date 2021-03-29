@@ -1,25 +1,12 @@
-
 <?php
-
 require "../config/main.php";
-require "../services/Autoloader.php";
+//require "../services/Autoloader.php";
+require "../vendor/autoload.php";
 
-
-spl_autoload_register([new \app\services\Autoloader(), 'autoload']);
-
+//spl_autoload_register([new \app\services\Autoloader(), 'loadClass']);
 session_start();
 
-
-//$product = new \app\models\Product();
-//var_dump($product->getById(12));
-//$product->title = 'Кухонка Маша';
-//$product->description = 'Мебель детская игровая';
-//$product->price = '10000';
-//$product->insert();
-
-//$product = \app\records\models\Product::getById(1);
-//var_dump($product);
-if(!$requestUri = preg_replace(['#^/#','#[?].*#','#/$#'],"",  $_SERVER['REQUEST_URI'])){
+if (!$requestUri = preg_replace(['#^/#', '#[?].*#', '#/$#'], "", $_SERVER['REQUEST_URI'])) {
     $requestUri = DEFAULT_CONTROLLER;
 }
 
@@ -29,8 +16,13 @@ $action = $parts[1];
 
 $controllerClass = "app\controllers\\" . ucfirst($controllerName) . "Controller";
 
-if(class_exists($controllerClass)){
-    $controller = new $controllerClass();
+if(class_exists($controllerClass)) {
+    /** @var \app\controllers\ProductController $controller */
+   // $controller = new $controllerClass(new \app\services\renderers\TemplateRenderer());
+    $controller = new $controllerClass(new \app\services\renderers\TwigRenderer());
     $controller->run($action);
 }
 
+// Коментарии к вопросу 2 дз 5 о несоответствии принцыпам SOLID:  в части наших моделей (на приемер USER )
+// нарушен принцип единственной ответственности. Каждый класс должен решать одну единственную задачу,
+// а мы возложили несколько задач.

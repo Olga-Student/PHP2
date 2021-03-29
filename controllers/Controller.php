@@ -3,48 +3,52 @@
 
 namespace app\controllers;
 
+use app\interfaces\RendererInterface;
+use app\services\renderers\TemplateRenderer;
+use app\services\renderers\TwigRenderer;
 
-class Controller
+abstract class Controller
 {
-    protected $action = null;  //текущий конроллер ссылок
+    protected $action = null;
     protected $defaultAction = 'index';
     protected $useLayout = true;
     protected $defaultLayout = 'main';
     protected $renderer = null;
 
+    public function __construct(RendererInterface $renderer)
+    {
+        $this->renderer = $renderer;
+    }
+
     public function run($action = null)
     {
         $this->action = $action ?: $this->defaultAction;
         $method = 'action' . ucfirst($this->action);
-        if(method_exists($this, $method)){   //проверяет есть ли такой метод
+        if (method_exists($this, $method)) {
             $this->$method();
-        }else{
+        } else {
             echo "404";
         }
     }
-    function renderTemplate($templateName, array $params = [])
-    {
-        extract($params);
-        ob_start();
-        include VIEWS_DIR . $templateName . ".php";
-        return ob_get_clean();
-    }
 
-    function render ($template, array $params = []) {
-        $content = $this->renderTemplate($template, $params);
-        if($this->useLayout) {
-            return $this->renderTemplate('layouts/' . $this->defaultLayout, ['content' => $content]);
+    function render($template, array $params = [])
+    {
+        $content = $this->renderer->render($template, $params);
+        if ($this->useLayout) {
+            return $this->renderer->render('layouts/' . $this->defaultLayout, ['content' => $content]);
         }
         return $content;
     }
 
-   public function redirect($url){
-       header('Location: {$url}');
-       exit();
-   }
+    public function redirect($url)
+    {
+        header("Location: {$url}");
+        exit();
+    }
 
-
-    public function redirectToReferer(){
+    public function redirectToReferer()
+    {
         $this->redirect($_SERVER['HTTP_REFERER']);
     }
+
 }

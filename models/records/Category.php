@@ -3,7 +3,7 @@
 namespace app\models\records;
 
 
-class Category extends Records
+class Category extends Record
 {
     public $id;
     public $name;

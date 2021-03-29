@@ -4,7 +4,7 @@ namespace app\interfaces;
 
 interface RecordInterface
 {
-    public static function getAll();
+    public static function getAll(array $ids = []);
 
     public static function getById($id);
 
@@ -12,7 +12,4 @@ interface RecordInterface
 
     public static function getTableName();
 
-    public function apDate();
-
-    public function insert();
 }

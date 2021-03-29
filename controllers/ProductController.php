@@ -3,6 +3,7 @@
 
 namespace app\controllers;
 
+//product/card
 use app\models\records\Product;
 
 class ProductController extends Controller
@@ -15,8 +16,9 @@ class ProductController extends Controller
 
     public function actionCard()
     {
-      $id = $_GET['id'];
-      $product = Product::getById($id);
-      echo $this->render('card', ['product' =>$product]);
+        $id = $_GET['id'];
+        /** @var Product $product */
+        $product = Product::getById($id);
+        echo $this->render('card', ['product' =>$product]);
     }
 }

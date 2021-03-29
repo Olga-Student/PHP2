@@ -4,7 +4,7 @@ namespace app\models\records;
 
 
 
-class Product extends Records
+class Product extends Record
 {
     public $id;
     public $title;
