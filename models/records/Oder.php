@@ -1,10 +1,10 @@
 <?php
 
 
-namespace app\models;
+namespace app\models\records;
 
 
-class Order extends Model
+class Order extends Record
 {
     public $id;
     public $product_id;
@@ -14,7 +14,7 @@ class Order extends Model
     public $price;
 
 
-    public function getTableName()
+    public static function getTableName()
     {
         return 'orders';
     }
