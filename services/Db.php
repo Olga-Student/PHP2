@@ -49,7 +49,7 @@ class Db
     }
 
     //'mysql:dbname=testdb;host=127.0.0.1';
-    protected function buildDsnString(): string
+    protected function buildDsnString()
     {
         return sprintf(
             '%s:dbname=%s;host=%s;charset=%s',

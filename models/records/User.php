@@ -19,18 +19,4 @@ class User extends Record
     {
         return 'users';
     }
-
-    public static function authById($userId)
-    {
-        $_SESSION['user_id'] = $userId;
-        return true;
-    }
-
-    public static function getCurrentUser()
-    {
-        if ($userId = $_SESSION['user_id']) {
-            return static::getById($userId);
-        }
-        return null;
-    }
 }

@@ -5,24 +5,24 @@ require "../vendor/autoload.php";
 
 //spl_autoload_register([new \app\services\Autoloader(), 'loadClass']);
 session_start();
+$request = new app\base\Request();
 
-if (!$requestUri = preg_replace(['#^/#', '#[?].*#', '#/$#'], "", $_SERVER['REQUEST_URI'])) {
-    $requestUri = DEFAULT_CONTROLLER;
-}
-
-$parts = explode("/", $requestUri);
-$controllerName = $parts[0];
-$action = $parts[1];
+$controllerName = $request->getControllerName() ?: DEFAULT_CONTROLLER;
+$action = $request->getActionName();
 
 $controllerClass = "app\controllers\\" . ucfirst($controllerName) . "Controller";
 
 if(class_exists($controllerClass)) {
     /** @var \app\controllers\ProductController $controller */
-   // $controller = new $controllerClass(new \app\services\renderers\TemplateRenderer());
-    $controller = new $controllerClass(new \app\services\renderers\TwigRenderer());
-    $controller->run($action);
+    $controller = new $controllerClass(new \app\services\renderers\TemplateRenderer());
+    //$controller = new $controllerClass(new \app\services\renderers\TwigRenderer());
+    try {
+        $controller->run($action);
+    }catch (\app\exceptions\ActionNotFoundException $exception){
+        echo $exception->getMessage();
+    }catch (Exception $e){
+        echo "Произошла ошибка {$e->getMessage()}";
+    }
+
 }
 
-// Коментарии к вопросу 2 дз 5 о несоответствии принцыпам SOLID:  в части наших моделей (на приемер USER )
-// нарушен принцип единственной ответственности. Каждый класс должен решать одну единственную задачу,
-// а мы возложили несколько задач.
